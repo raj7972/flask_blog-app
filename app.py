@@ -28,10 +28,10 @@ class User(UserMixin,db.Model):
 
 class Blog(db.Model):
     blog_id=db.Column(db.Integer,primary_key=True)
-    title=db.Column(String(80),nullable=False,primary_key=True)
-    author=db.Column(String(80),nullable=False,primary_key=True)
+    title=db.Column(db.String(80),nullable=False,primary_key=True)
+    author=db.Column(db.String(80),nullable=False,primary_key=True)
     content=db.Column(db.Text(),nullable=False,primary_key=True)
-    pub_date= title=db.Column(db.Datetime(),nullable=False,default=datetime.utcnow)
+    pub_date= title=db.Column(db.DateTime(),nullable=False,default=datetime.utcnow)
     
     def __repr__(self):
         return '<Blog %r>' % self.title
