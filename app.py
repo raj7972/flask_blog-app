@@ -1,8 +1,11 @@
 
+from email.policy import default
+from turtle import title
 from unicodedata import name
 from flask import Flask,render_template ,request, flash, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager,login_user,UserMixin
+from flask_login import LoginManager,login_user,UserMixin,logout_user
+from datetime import datetime
 
 app= Flask(__name__)
 
@@ -22,6 +25,21 @@ class User(UserMixin,db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+class Blog(db.Model):
+    blog_id=db.Column(db.Integer,primary_key=True)
+    title=db.Column(String(80),nullable=False,primary_key=True)
+    author=db.Column(String(80),nullable=False,primary_key=True)
+    content=db.Column(db.Text(),nullable=False,primary_key=True)
+    pub_date= title=db.Column(db.Datetime(),nullable=False,default=datetime.utcnow)
+    
+    def __repr__(self):
+        return '<Blog %r>' % self.title
+
+
+
+
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -62,23 +80,23 @@ def login():
         password=request.form.get('password')
         user=User.query.filter_by(username=username).first()
         
-        print(username)
-        print(password)
-        if user:
-            print(user.username)
-            print(user.password)
-        else:
-            print("User not found")
         if user and password==user.password:
             login_user(user)
             return redirect('/')
         else:
-            flash('Invalid credentials','warning')
+            flash('Invalid credentials','danger')
             return redirect('/login')
 
     return render_template("login.html")
 
+@app.route("/Logout")
+def logout():
+    logout_user()
+    return redirect('/')
 
+@app.route("/blogpost")
+def blogpost():
+    return render_template('/blog.html')
 
 if __name__=="__main__":
     
