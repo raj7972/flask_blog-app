@@ -3,6 +3,39 @@
 <title>Home</title>
 {% endblock title %}
 {% block body %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for category, message in messages %}
+    <div class="alert alert-{{category}} alert-dismissible fade show" role="alert">
+        <strong>Message:</strong> {{message}}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
 <h1>home page</h1>
+{% for blog in data %}
+
+
+<div class="col-md-6">
+    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+      <div class="col p-4 d-flex flex-column position-static">
+        
+        <h3 class="mb-0">{{blog.title}}</h3>
+        <div class="mb-1 text-muted">{{blog.pub_data}}</div>
+        <p class="card-text mb-auto">{{blog.content}}</p>
+        <h5>Author:-{{blog.author}}</h5>
+        <a href="#" class="stretched-link btn btn-primary">Continue reading</a>
+      </div>
+      <div class="col-auto d-none d-lg-block">
+        <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+
+      </div>
+    </div>
+  </div>
+
+{% endfor %}
 
 {% endblock body %}
